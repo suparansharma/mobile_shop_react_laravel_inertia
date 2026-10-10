@@ -21,9 +21,16 @@
     <?php else: ?>
         <!-- Production Build -->
         <?php
-            $manifestPath = public_path('build/.vite/manifest.json');
+            $manifestPath = public_path('build/manifest.json');
             if (file_exists($manifestPath)) {
                 $manifest = json_decode(file_get_contents($manifestPath), true);
+                
+                // Load Main CSS (Tailwind)
+                if (isset($manifest['resources/css/app.css'])) {
+                    echo '<link rel="stylesheet" href="/build/' . $manifest['resources/css/app.css']['file'] . '">';
+                }
+
+                // Load JS and Component CSS
                 if (isset($manifest['resources/js/app.jsx'])) {
                     echo '<script type="module" src="/build/' . $manifest['resources/js/app.jsx']['file'] . '"></script>';
                     if (isset($manifest['resources/js/app.jsx']['css'])) {
