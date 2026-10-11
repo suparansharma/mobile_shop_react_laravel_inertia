@@ -28,10 +28,15 @@ export default defineConfig(({ mode }) => {
         },
         define: {
             'process.env': {
-                NEXT_PUBLIC_BASE_URL: env.NEXT_PUBLIC_BASE_URL,
-                NEXT_PUBLIC_BACKEND_URL: env.NEXT_PUBLIC_BACKEND_URL,
-                NEXT_PUBLIC_API_URL: env.NEXT_PUBLIC_API_URL,
-            }
+                NEXT_PUBLIC_BASE_URL: env.NEXT_PUBLIC_BASE_URL || env.VITE_BASE_URL,
+                NEXT_PUBLIC_BACKEND_URL: env.NEXT_PUBLIC_BACKEND_URL || env.VITE_BASE_URL,
+                NEXT_PUBLIC_API_URL: env.NEXT_PUBLIC_API_URL || env.VITE_API_URL,
+            },
+            'process.env.NEXT_PUBLIC_BASE_URL': JSON.stringify(env.NEXT_PUBLIC_BASE_URL || env.VITE_BASE_URL || ''),
+            'process.env.NEXT_PUBLIC_BACKEND_URL': JSON.stringify(env.NEXT_PUBLIC_BACKEND_URL || env.VITE_BASE_URL || ''),
+            'process.env.NEXT_PUBLIC_API_URL': JSON.stringify(env.NEXT_PUBLIC_API_URL || env.VITE_API_URL || ''),
+            'import.meta.env.VITE_API_URL': JSON.stringify(env.VITE_API_URL || env.NEXT_PUBLIC_API_URL || ''),
+            'import.meta.env.VITE_BASE_URL': JSON.stringify(env.VITE_BASE_URL || env.NEXT_PUBLIC_BASE_URL || ''),
         }
     };
 });

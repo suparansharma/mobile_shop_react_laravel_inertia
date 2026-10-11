@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuthStore } from '@/store/authStore';
+import { API_URL } from '@/lib/api';
 
 export default function AdminWishlistPage() {
   const [stats, setStats] = useState<any>(null);
@@ -14,8 +15,6 @@ export default function AdminWishlistPage() {
   useEffect(() => {
     const fetchData = async () => {
       if (!token) return;
-      
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || (process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_BASE_URL || 'https://api.cellx.com.bd'}/api/v1`}`);
       
       try {
         const [statsRes, productsRes] = await Promise.all([

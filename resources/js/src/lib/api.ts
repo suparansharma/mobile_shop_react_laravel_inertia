@@ -1,4 +1,63 @@
-export const API_URL = import.meta.env?.VITE_API_URL || 'http://127.0.0.1:8000/api/v1';
+export const getBaseUrl = (): string => {
+  const configuredBaseUrl = 
+    (typeof process !== 'undefined' && (process.env?.NEXT_PUBLIC_BASE_URL || process.env?.NEXT_PUBLIC_BACKEND_URL)) ||
+    (import.meta.env?.VITE_BASE_URL);
+
+  if (typeof window !== 'undefined') {
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    
+    // On live site, always avoid localhost
+    if (!isLocalhost) {
+      if (configuredBaseUrl && !configuredBaseUrl.includes('localhost') && !configuredBaseUrl.includes('127.0.0.1')) {
+        return configuredBaseUrl.replace(/\/+$/, '');
+      }
+      return window.location.origin;
+    }
+
+    // On local machine dev server (Vite port 5173), route to Laravel backend
+    if (window.location.port === '5173') {
+      return 'http://127.0.0.1:8000';
+    }
+
+    return window.location.origin;
+  }
+
+  return (configuredBaseUrl && !configuredBaseUrl.includes('localhost') && !configuredBaseUrl.includes('127.0.0.1'))
+    ? configuredBaseUrl.replace(/\/+$/, '')
+    : 'http://127.0.0.1:8000';
+};
+
+export const getApiUrl = (): string => {
+  const configuredApiUrl = 
+    (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_API_URL) ||
+    (import.meta.env?.VITE_API_URL);
+
+  if (typeof window !== 'undefined') {
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+    // On live site, always avoid localhost
+    if (!isLocalhost) {
+      if (configuredApiUrl && !configuredApiUrl.includes('localhost') && !configuredApiUrl.includes('127.0.0.1')) {
+        return configuredApiUrl.replace(/\/+$/, '');
+      }
+      return `${window.location.origin}/api/v1`;
+    }
+
+    // On local machine dev server
+    if (window.location.port === '5173') {
+      return 'http://127.0.0.1:8000/api/v1';
+    }
+
+    return `${window.location.origin}/api/v1`;
+  }
+
+  return (configuredApiUrl && !configuredApiUrl.includes('localhost') && !configuredApiUrl.includes('127.0.0.1'))
+    ? configuredApiUrl.replace(/\/+$/, '')
+    : 'http://127.0.0.1:8000/api/v1';
+};
+
+export const BASE_URL = getBaseUrl();
+export const API_URL = getApiUrl();
 
 export async function fetchProducts(params = '') {
   try {

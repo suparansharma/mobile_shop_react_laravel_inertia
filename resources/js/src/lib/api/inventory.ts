@@ -1,6 +1,5 @@
 import { getAuthHeaders } from './brands'; // Reusing getAuthHeaders
-
-const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_BASE_URL || 'https://api.cellx.com.bd'}/api/v1`}`);
+import { API_URL as BASE_URL } from '../api';
 
 export const fetchInventory = async (page = 1, perPage = 15, search = '') => {
   let url = `${BASE_URL}/admin/inventory?page=${page}&per_page=${perPage}`;

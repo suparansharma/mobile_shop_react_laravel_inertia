@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { API_URL, BASE_URL } from '@/lib/api';
 
 interface ProductSearchResult {
   id: number;
@@ -81,9 +82,8 @@ export default function SearchBar({
     setLoading(true);
     const timer = setTimeout(async () => {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
         const res = await fetch(
-          `${apiUrl}/products?search=${encodeURIComponent(query.trim())}&per_page=6`
+          `${API_URL}/products?search=${encodeURIComponent(query.trim())}&per_page=6`
         );
         if (res.ok) {
           const data = await res.json();
@@ -125,7 +125,7 @@ export default function SearchBar({
     const thumb = images.find((img) => img.is_thumbnail) || images[0];
     const path = thumb.image_path;
     if (path.startsWith("http") || path.startsWith("/")) return path;
-    const baseUrl = (process.env.NEXT_PUBLIC_API_URL || "").replace("/api/v1", "");
+    const baseUrl = BASE_URL;
     return `${baseUrl}/storage/${path}`;
   };
 

@@ -1,8 +1,5 @@
 import { API_URL } from '../api';
 
-// We assume API_URL is exported from index.ts, or we can just define it if it's not.
-// Let's redefine it locally just to be safe if index.ts doesn't export it.
-const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_BASE_URL || 'https://api.cellx.com.bd'}/api/v1`}`);
 
 export const getAuthHeaders = () => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
