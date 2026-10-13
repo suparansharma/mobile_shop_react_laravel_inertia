@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile Shop</title>
+    <title>CellX - Gadgets & Accessories</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     
     <?php if (app()->environment('local')): ?>
         <!-- React Refresh Preamble -->
