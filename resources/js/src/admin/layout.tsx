@@ -14,8 +14,13 @@ export default function AdminLayout({
 }) {
   const pathname = useLocation().pathname;
   const router = useNavigate();
-  const { user, isAuthenticated } = useAuthStore();
+  const { user, isAuthenticated, logout } = useAuthStore();
   const [mounted, setMounted] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    router('/login');
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -107,13 +112,22 @@ export default function AdminLayout({
             );
           })}
         </nav>
-        <div className="p-4 border-t border-gray-100">
-          <Link to="/" className="flex items-center px-4 py-2 text-sm font-medium text-gray-600 hover:text-orange-500 transition-colors">
-            <svg className="mr-3 h-5 w-5 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="p-4 border-t border-gray-100 dark:border-gray-800 space-y-1">
+          <Link to="/" className="flex items-center px-4 py-2.5 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-950/20 rounded-xl transition-all">
+            <svg className="mr-3 h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             Back to Store
           </Link>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center px-4 py-2.5 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-all text-left"
+          >
+            <svg className="mr-3 h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            Logout
+          </button>
         </div>
       </div>
 
@@ -121,18 +135,29 @@ export default function AdminLayout({
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top Header for Mobile & Quick Actions */}
         <header className="h-16 bg-white dark:bg-[#111] border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-4 sm:px-6 lg:px-8 z-10">
-          <div className="flex md:hidden items-center">
+          <div className="flex md:hidden items-center gap-3">
             <span className="text-xl font-black text-orange-500">Admin</span>
+            <Link to="/" className="text-xs text-gray-500 hover:text-orange-500">Store</Link>
           </div>
-          <div className="flex-1 flex justify-end items-center">
-            <button className="bg-gray-100 p-2 rounded-full text-gray-500 dark:text-gray-400 hover:text-orange-500 hover:bg-orange-950 transition-all">
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-              </svg>
-            </button>
-            <div className="ml-4 h-8 w-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold shadow-sm uppercase">
-              {user?.name ? user.name.charAt(0) : 'A'}
+          <div className="flex-1 flex justify-end items-center gap-3">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold shadow-sm uppercase text-sm">
+                {user?.name ? user.name.charAt(0) : 'A'}
+              </div>
+              <span className="hidden sm:inline-block text-sm font-medium text-gray-700 dark:text-gray-300">
+                {user?.name || 'Admin'}
+              </span>
             </div>
+            <button
+              onClick={handleLogout}
+              title="Logout"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all border border-red-200 dark:border-red-900/30"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              <span className="hidden sm:inline">Logout</span>
+            </button>
           </div>
         </header>
 
